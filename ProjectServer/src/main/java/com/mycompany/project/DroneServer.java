@@ -30,6 +30,10 @@ public class DroneServer {
         mapPanel.setBackground(Color.red);
         mapPanel.setBounds(200, 50, 500, 500);
 
+        JPanel sidePanel = new JPanel();
+        sidePanel.setBackground(Color.blue);
+        sidePanel.setBounds(0, 50, 200, 500);
+
         JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(700,550);
