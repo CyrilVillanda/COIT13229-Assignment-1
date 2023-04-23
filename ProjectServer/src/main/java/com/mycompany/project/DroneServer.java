@@ -40,6 +40,10 @@ public class DroneServer {
         titleLabel.setHorizontalAlignment(JLabel.CENTER);
         titleLabel.setBounds(0, 0, 100, 50);
 
+        JButton deleteFireButton = new JButton();
+        deleteFireButton.setBounds(50, 10, 100, 20);
+        deleteFireButton.setText("Delete Fire");
+
         JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(null);
@@ -47,6 +51,7 @@ public class DroneServer {
         frame.add(titleLabel);
         frame.add(sidePanel);
         frame.add(mapPanel);
+        sidePanel.add(deleteFireButton);
         frame.setVisible(true);
 
     try{
