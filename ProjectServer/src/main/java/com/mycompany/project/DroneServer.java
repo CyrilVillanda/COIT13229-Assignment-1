@@ -44,6 +44,7 @@ public class DroneServer {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(null);
         frame.setSize(700,550);
+        frame.add(titleLabel);
         frame.add(sidePanel);
         frame.add(mapPanel);
         frame.setVisible(true);
