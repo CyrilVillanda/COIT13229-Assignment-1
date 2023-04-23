@@ -5,9 +5,11 @@
  */
 package com.mycompany.project;
 
+import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.EOFException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -18,6 +20,11 @@ import java.net.Socket;
  */
 public class DroneServer {
    public static void main (String args[]) {
+    
+    String csvFile = "C:\\Users\\cjvil\\OneDrive\\Documents\\NetBeansProjects\\ProjectServer\\fires.csv";
+    String line = "";
+    String csvSeparator = ",";
+       
     try{
       int serverPort=7896; 
       ServerSocket listenSocket=new ServerSocket(serverPort);
@@ -30,6 +37,22 @@ public class DroneServer {
     } catch(IOException e){
  	System.out.println("Listen :"+e.getMessage());
       }
+    try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
+
+            while ((line = br.readLine()) != null) {
+
+                // use comma as separator
+                String[] data = line.split(csvSeparator);
+
+                // do something with the data
+                System.out.println("FireId: " + data[0] + ", X: " + data[1] + ", Y: " + data[2] + ", ReportingDroneId: " + data[3] + ", FireSeverity: " + data[4]);
+
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 }
 
@@ -49,6 +72,7 @@ class Connection extends Thread {
            System.out.println("Connection:" +e.getMessage());
           }
       }
+      @Override
      public void run(){
         try { // an echo server
            String data = in.readUTF();
