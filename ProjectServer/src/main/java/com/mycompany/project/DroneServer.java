@@ -44,6 +44,10 @@ public class DroneServer {
         deleteFireButton.setBounds(50, 10, 100, 20);
         deleteFireButton.setText("Delete Fire");
 
+        JButton recallDroneButton = new JButton();
+        recallDroneButton.setBounds(0, 40, 200, 20);
+        recallDroneButton.setText("Recall Drone");
+
         JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(null);
@@ -52,6 +56,7 @@ public class DroneServer {
         frame.add(sidePanel);
         frame.add(mapPanel);
         sidePanel.add(deleteFireButton);
+        sidePanel.add(recallDroneButton);
         frame.setVisible(true);
 
     try{
