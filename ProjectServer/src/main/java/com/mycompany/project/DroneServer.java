@@ -34,9 +34,18 @@ public class DroneServer {
         sidePanel.setBackground(Color.blue);
         sidePanel.setBounds(0, 50, 200, 500);
 
+        JLabel titleLabel = new JLabel();
+        titleLabel.setText("Drone Application");
+        titleLabel.setVerticalAlignment(JLabel.TOP);
+        titleLabel.setHorizontalAlignment(JLabel.CENTER);
+        titleLabel.setBounds(0, 0, 100, 50);
+
         JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLayout(null);
         frame.setSize(700,550);
+        frame.add(sidePanel);
+        frame.add(mapPanel);
         frame.setVisible(true);
 
     try{
