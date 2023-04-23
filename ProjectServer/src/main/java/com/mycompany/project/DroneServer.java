@@ -25,6 +25,12 @@ import java.net.Socket;
 public class DroneServer {
     
     public static void main (String args[]) {
+
+        JFrame frame = new JFrame();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(700,550);
+        frame.setVisible(true);
+
     try{
       int serverPort=7896; 
       ServerSocket listenSocket=new ServerSocket(serverPort);
