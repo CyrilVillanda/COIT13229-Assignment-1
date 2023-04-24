@@ -59,18 +59,18 @@ public class DroneServer {
         JTextField droneDetails = new JTextField();
         droneDetails.setBounds(0, 130, 200, 370)
 
-        JFrame frame = new JFrame();
+        JFrame frame = new JFrame("Drone App");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(null);
-        frame.setSize(700,550);
+        frame.setSize(700,600);
         frame.add(titleLabel);
-        frame.add(sidePanel);
-        frame.add(mapPanel);
         sidePanel.add(deleteFireButton);
         sidePanel.add(recallDroneButton);
         sidePanel.add(moveDroneButton);
-        sidePanel.add(droneDetails);
         sidePanel.add(exitButton);
+        sidePanel.add(droneDetails);
+        frame.add(sidePanel);
+        frame.add(mapPanel);
         frame.setVisible(true);
 
     try{
