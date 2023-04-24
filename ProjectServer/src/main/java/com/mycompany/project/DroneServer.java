@@ -25,6 +25,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import static java.lang.Integer.parseInt;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -45,11 +46,12 @@ import javax.swing.JTextField;
 public class DroneServer implements ActionListener{
     
     protected static ArrayList<Drone> drones = new ArrayList<>();
+    public static DisplayObjectsOnBackground mapPanel;
     
     public static void main (String args[]) {
         
         //JPanel mapPanel = new JPanel();
-        DisplayObjectsOnBackground mapPanel = new DisplayObjectsOnBackground();
+        mapPanel = new DisplayObjectsOnBackground();
         //mapPanel.setBackground(Color.red); // See panel boundries
         mapPanel.setBounds(200, 50, 500, 500);
         mapPanel.setLayout(null);
@@ -205,11 +207,18 @@ class DisplayObjectsOnBackground extends JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
             
-        g.setColor(Color.BLUE);
-        g.fillRect(300, 200, 50, 25);
-        g.setColor(Color.WHITE);
-        g.setFont(new Font("Arial", Font.PLAIN, 10));
-        g.drawString("Drone 1", 0, 0);
+        
+        for (Drone d : DroneServer.drones) {
+
+            int x = (parseInt(d.getX()));
+            int y = (parseInt(d.getY()) - 500) * -1;
+
+            g.setColor(Color.BLUE);
+            g.fillRect(x, y, 50, 25);
+            g.setColor(Color.WHITE);
+            g.setFont(new Font("Arial", Font.PLAIN, 10));
+            g.drawString(d.getDroneName(), x + 5, y + 10);
+        }
         
         
         g.setColor(Color.RED);
@@ -246,8 +255,7 @@ class Connection extends Thread {
       @Override
      public void run(){
         try { // an echo server
-            String data = in.readUTF();
-            
+ 
             Drone tempD = (Drone)objectIn.readObject();
             
            boolean newDrone = true;
@@ -267,6 +275,7 @@ class Connection extends Thread {
             DroneServer.drones.add(tempD);
         }
             out.writeUTF("Drone Added Successfully");
+            DroneServer.mapPanel.repaint();
 
         }catch(EOFException e) {
              System.out.println("EOF:"+e.getMessage());

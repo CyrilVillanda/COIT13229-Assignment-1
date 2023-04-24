@@ -40,7 +40,7 @@ public class DroneClient {
         System.out.println("Enter Drone id: ");
         droneId = input.nextLine();
         
-        System.out.println("Enter Name id: ");
+        System.out.println("Enter Name: ");
         droneName = input.nextLine();
         
         Drone drone = new Drone(droneId, droneName, x, y);
