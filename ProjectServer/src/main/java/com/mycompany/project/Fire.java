@@ -11,13 +11,17 @@ package com.mycompany.project;
  */
 public class Fire {
     String fireId;
+    String x;
+    String y;
     String fireLevel;
 
     public Fire() {
     }
 
-    public Fire(String fireId, String fireLevel) {
+    public Fire(String fireId, String x, String y, String fireLevel) {
         this.fireId = fireId;
+        this.x = x;
+        this.y = y;
         this.fireLevel = fireLevel;
     }
 
@@ -27,6 +31,22 @@ public class Fire {
 
     public void setFireId(String fireId) {
         this.fireId = fireId;
+    }
+
+    public String getX() {
+        return x;
+    }
+
+    public void setX(String x) {
+        this.x = x;
+    }
+
+    public String getY() {
+        return y;
+    }
+
+    public void setY(String y) {
+        this.y = y;
     }
 
     public String getFireLevel() {
@@ -39,8 +59,7 @@ public class Fire {
 
     @Override
     public String toString() {
-        return "Fire" + "fireId = " + fireId + ", fireLevel = " + fireLevel;
+        return "Fire{" + "fireId=" + fireId + ", x=" + x + ", y=" + y + ", fireLevel=" + fireLevel + '}';
     }
-    
     
 }

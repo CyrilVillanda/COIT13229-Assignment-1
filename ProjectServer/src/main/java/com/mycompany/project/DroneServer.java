@@ -5,16 +5,32 @@
  */
 package com.mycompany.project;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Image;
+import javax.swing.ImageIcon;
+import java.awt.PopupMenu;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.EOFException;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 /**
  *
@@ -22,10 +38,10 @@ import java.net.Socket;
  */
 
 
-public class DroneServer {
+public class DroneServer implements ActionListener{
     
     public static void main (String args[]) {
-
+        
         //JPanel mapPanel = new JPanel();
         DisplayObjectsOnBackground mapPanel = new DisplayObjectsOnBackground();
         //mapPanel.setBackground(Color.red); // See panel boundries
@@ -61,7 +77,7 @@ public class DroneServer {
         
         JTextField droneDetails = new JTextField();
         droneDetails.setBounds(0, 130, 200, 370);
-
+        
         JFrame frame = new JFrame("Drone App");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(null);
@@ -75,61 +91,77 @@ public class DroneServer {
         frame.add(sidePanel);
         frame.add(mapPanel);
         frame.setVisible(true);
-
+        
+        //readFile();
+        
     try{
       int serverPort=7896; 
       ServerSocket listenSocket=new ServerSocket(serverPort);
       while(true) {
-     Socket clientSocket=listenSocket.accept();
+	 Socket clientSocket=listenSocket.accept();
          
-         ReadFile rf = new ReadFile();
-     Connection c = new Connection(clientSocket);
-         
-         rf.start();
+	 Connection c = new Connection(clientSocket);
          
          System.out.printf("\nServer waiting on: %d for client from %d ",
                  listenSocket.getLocalPort(), clientSocket.getPort() );
         }
     }
     catch(IOException e){
-    System.out.println("Listen :"+e.getMessage());
+ 	System.out.println("Listen :"+e.getMessage());
         }
+        
+        
     }
-}
-
-
-class ReadFile extends Thread{
-    @Override
-    public void run(){
-        String csvFile = "C:\\Users\\cjvil\\OneDrive\\Documents\\NetBeansProjects\\ProjectServer\\drone.csv";
+    
+    public static void readFile(){
+        String binFile = "drone.bin";
         String line;
         
         try {
-            // create input and output streams
-            BufferedReader br = new BufferedReader(new FileReader(csvFile));
-            //BufferedWriter bw = new BufferedWriter(new FileWriter("C:\\Users\\cjvil\\OneDrive\\Documents\\NetBeansProjects\\ProjectServer\\fires.csv"));
+            // create input  streams
+            FileInputStream fileInput = new FileInputStream(binFile);
+            DataInputStream dataOutput = new DataInputStream(fileInput);
+            
+            // Create an ArrayList to hold the data read from the file
+            ArrayList<Drone> drone = new ArrayList<>();
 
-            // read data from input file and write to output file
-            while ((line = br.readLine()) != null) {
-                String[] data = line.split(","); // split CSV data using comma delimiter
-
-                String droneId = data[0];
-                String droneName = data[1];
+            // Read data from the file and add it to the ArrayList
+            while (dataOutput.available() > 0) {
+                String droneId = dataOutput.readUTF();
+                String droneName = dataOutput.readUTF();
+                String x = dataOutput.readUTF();
+                String y = dataOutput.readUTF();
                 
-                String output = String.join(",",droneId , droneName); // join CSV data using comma delimiter
-                System.out.println("\nDroneId: " +data[0] + ", DroneName: " + data[1]);
-                //bw.newLine();
+                Drone d = new Drone(droneId,droneName,x,y);
+                drone.add(d);
+                
             }
 
-            // close input and output streams
-            br.close();
-            //bw.close();
+            // Print the data to the console
+            System.out.println(drone);
+            
+            fileInput.close();
+            dataOutput.close();
 
+        } catch (FileNotFoundException e) {
+            
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+    
+    public void addDrone(String droneId, String droneName){
+        
+        
+        
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent arg0) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
+
 
 class DisplayObjectsOnBackground extends JPanel {
     
@@ -157,10 +189,11 @@ class DisplayObjectsOnBackground extends JPanel {
         g.setColor(Color.WHITE);
         g.setFont(new Font("Arial", Font.PLAIN, 20));
         g.drawString("Fire", 355, 330);        
-
+        
        
     }
 }
+
 
 class Connection extends Thread {
       DataInputStream in;
@@ -183,8 +216,8 @@ class Connection extends Thread {
         try { // an echo server
            String data = in.readUTF();
            
-          out.writeUTF("Server received:"+data);
-          System.out.println("Server received:"+data);
+          out.writeUTF("Drone Added: "+ data);
+          //System.out.println("Server received:"+data);
 
         }catch(EOFException e) {
              System.out.println("EOF:"+e.getMessage());
@@ -192,11 +225,11 @@ class Connection extends Thread {
         catch(IOException e){
            System.out.println("IO:"+e.getMessage());
         }
-     
-    finally {
-       try {clientSocket.close();
+	 
+	finally {
+	   try {clientSocket.close();
            }
-        catch(IOException e){/*close failed*/
+	    catch(IOException e){/*close failed*/
            }
         }
     }

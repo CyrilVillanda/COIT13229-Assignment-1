@@ -11,6 +11,7 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Scanner;
 
 /**
  *
@@ -18,33 +19,36 @@ import java.net.UnknownHostException;
  */
 public class DroneClient {
     public static void main (String args[]) {
-     //arguments supply message and hostname of destination
-     //if running from a command prompt
-    Socket s=null;
+    Scanner input = new Scanner(System.in);
+    Socket s = null;
     String hostName = "localhost";
-    String message ="Output works";
+    String droneId;
+    String droneName;
     try{
-    int serverPort=7896;
+	int serverPort=7896;
     
-    s=new Socket(hostName, serverPort);    
-    DataInputStream in=new DataInputStream(s.getInputStream());
-    DataOutputStream out=new DataOutputStream(s.getOutputStream());
-    out.writeUTF(message);
-        String data = in.readUTF();       
-    System.out.println("Message Received From Server: "+ data) ;      
+	s = new Socket(hostName, serverPort);    
+	DataInputStream in =new DataInputStream(s.getInputStream());
+	DataOutputStream out =new DataOutputStream(s.getOutputStream());
+        
+        System.out.print("Enter Drone id: ");
+        droneId = input.next();
+        
+        System.out.print("Enter Name id: ");
+        droneName = input.next();
+        
+       String drone = droneId +","+ droneName;
+       
+	out.writeUTF(drone);
+        String data = in.readUTF();	      
+	System.out.println("Message Received From Server: "+ data) ;      
        } catch (UnknownHostException e){
-       System.out.println("Sock:"+e.getMessage()); 
-    } catch (EOFException e){
-       System.out.println("EOF:"+e.getMessage());
-        } catch (IOException e){
-       System.out.println("IO:"+e.getMessage());
+	   System.out.println("Sock:"+e.getMessage()); 
+	} catch (EOFException e){
+	   System.out.println("EOF:"+e.getMessage());
+    	} catch (IOException e){
+	   System.out.println("IO:"+e.getMessage());
         }
-    finally {
-       if(s!=null)
-         try {
-              s.close();
-             } catch (IOException e){
-        System.out.println("close:"+e.getMessage());}
-        } 
+	
     }
 }

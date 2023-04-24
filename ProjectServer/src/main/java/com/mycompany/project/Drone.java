@@ -24,11 +24,6 @@ public class Drone {
         this.x = x;
         this.y = y;
         this.droneId = droneId;
-      
-    }
-    
-    public void addDrone(String fireId, String x, String y, String droneId, String fireSeverity){
-        
     }
 
     public String getdroneName() {
