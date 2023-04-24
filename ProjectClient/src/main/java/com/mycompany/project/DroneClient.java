@@ -34,8 +34,8 @@ public class DroneClient extends Thread {
     String hostName = "localhost";
     String droneId;
     String droneName;
-    String x = "250";
-    String y = "250";
+    String x = "350";
+    String y = "350";
     
     System.out.println("Enter Drone id: ");
         droneId = input.nextLine();

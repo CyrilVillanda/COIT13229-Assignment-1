@@ -142,11 +142,13 @@ public class DroneServer extends Thread implements ActionListener{
         try {
             // create input  streams
             BufferedReader br = new BufferedReader(new FileReader(csvFile));
+            
             FileInputStream fileInput = new FileInputStream(binFile);
             DataInputStream dataOutput = new DataInputStream(fileInput);
 
             // Read data from the file and add it to the ArrayList
             while (dataOutput.available() > 0) {
+                
                 String droneId = dataOutput.readUTF();
                 String droneName = dataOutput.readUTF();
                 String x = dataOutput.readUTF();
@@ -156,6 +158,7 @@ public class DroneServer extends Thread implements ActionListener{
                 drones.add(d);
                 
             }
+            /*
             // Read data from CSV file and add to arraylist
             while ((line = br.readLine()) != null) {
                 String[] data = line.split(","); // split CSV data using comma delimiter
@@ -168,9 +171,11 @@ public class DroneServer extends Thread implements ActionListener{
                 Fire f = new Fire(fireId,x,y,fireLevel);
                 fires.add(f);
             }
+            */
             
             // Print the data to the console
             System.out.println(drones);
+            System.out.println(fires);
             
             fileInput.close();
             dataOutput.close();
@@ -199,14 +204,7 @@ public class DroneServer extends Thread implements ActionListener{
                 dataOutput.writeUTF(drone.getX());
                 dataOutput.writeUTF(drone.getY());
             }
-            
-            for (Drone drone : drones) {
-                dataOutput.writeUTF(drone.getDroneId());
-                dataOutput.writeUTF(drone.getDroneName());
-                dataOutput.writeUTF(drone.getX());
-                dataOutput.writeUTF(drone.getY());
-            }
-            
+
             // Close the output streams
             fileOutput.close();
             dataOutput.close();
@@ -265,11 +263,6 @@ class DisplayObjectsOnBackground extends JPanel {
             g.setFont(new Font("Arial", Font.PLAIN, 20));
             g.drawString(f.getFireId(), x + 5, y + 10);  
         }
-        
-        
-              
-        
-       
     }
 }
 
