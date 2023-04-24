@@ -24,6 +24,8 @@ public class DroneClient {
     String hostName = "localhost";
     String droneId;
     String droneName;
+    String x;
+    String y;
     try{
 	int serverPort=7896;
     
@@ -36,6 +38,12 @@ public class DroneClient {
         
         System.out.print("Enter Name id: ");
         droneName = input.next();
+        
+        System.out.print("Enter x Coordinate: ");
+        x = input.next();
+        
+        System.out.print("Enter y Coordinate: ");
+        y = input.next();
         
         String drone = droneId +","+ droneName;
        
