@@ -141,7 +141,7 @@ public class DroneServer extends Thread implements ActionListener{
         
         try {
             // create input  streams
-            BufferedReader br = new BufferedReader(new FileReader(csvFile));
+            //BufferedReader br = new BufferedReader(new FileReader(csvFile));
             
             FileInputStream fileInput = new FileInputStream(binFile);
             DataInputStream dataOutput = new DataInputStream(fileInput);
@@ -158,6 +158,7 @@ public class DroneServer extends Thread implements ActionListener{
                 drones.add(d);
                 
             }
+            
             /*
             // Read data from CSV file and add to arraylist
             while ((line = br.readLine()) != null) {
@@ -175,11 +176,11 @@ public class DroneServer extends Thread implements ActionListener{
             
             // Print the data to the console
             System.out.println(drones);
-            System.out.println(fires);
+            //System.out.println(fires);
             
             fileInput.close();
             dataOutput.close();
-            br.close();
+            //br.close();
 
         } catch (FileNotFoundException e) {
             

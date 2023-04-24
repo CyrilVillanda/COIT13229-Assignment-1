@@ -38,22 +38,22 @@ public class DroneClient extends Thread {
     String y = "350";
     
     System.out.println("Enter Drone id: ");
-        droneId = input.nextLine();
-        
-        System.out.println("Enter Name: ");
-        droneName = input.nextLine();
-        
-        drone = new Drone(droneId, droneName, x, y);
+    droneId = input.nextLine();
+
+    System.out.println("Enter Name: ");
+    droneName = input.nextLine();
+
+    drone = new Drone(droneId, droneName, x, y);
         
     try{
+        //Server port
 	int serverPort=7896;
-    
-	s = new Socket(hostName, serverPort);    
+        // Creating socket 
+        s = new Socket(hostName, serverPort);
+        
 	DataInputStream dataIn =new DataInputStream(s.getInputStream());
 	DataOutputStream dataOut =new DataOutputStream(s.getOutputStream());
         ObjectOutputStream objectOut = new ObjectOutputStream(dataOut);
-        
-        
        
 	objectOut.writeObject(drone);
         
@@ -61,21 +61,25 @@ public class DroneClient extends Thread {
         
 	System.out.println("Message Received From Server: "+ data) ;      
        } catch (UnknownHostException e){
-	   System.out.println("Sock:"+e.getMessage()); 
-	} catch (EOFException e){
-	   System.out.println("EOF:"+e.getMessage());
-    	} catch (IOException e){
+           System.out.println("Sock:"+e.getMessage());
+       } catch (EOFException e){
+           System.out.println("EOF:"+e.getMessage());
+       } catch (IOException e){
 	   System.out.println("IO:"+e.getMessage());
-        }
+       }
     
+    // creates and starts a new thread
     DroneClient thread = new DroneClient();
     thread.start();
-	
+    
+    // Loop to randomly set the drones x and y positions
     while(true){
         Thread.sleep(2500);
+        // converts the x and y string to integer
         int xpos = Integer.parseInt(x);
         int ypos = Integer.parseInt(y);
         
+        // Switch case to randomly select x and y positions
         switch (randNum.nextInt(4)) {
             case 0:
                 xpos += randNum.nextInt(10);
@@ -94,12 +98,15 @@ public class DroneClient extends Thread {
                 ypos -= randNum.nextInt(10);
                 break;
         }
-
+        
+    // converts the x and y integer back to string
     x = Integer.toString(xpos);
     y = Integer.toString(ypos);
-
+    
+    // sets the drone x and y positions
     drone.setX(x);
     drone.setY(y);
+    
     
     if (randNum.nextInt(30) == 1) {
             int fireLev = randNum.nextInt(9) + 1;
@@ -111,11 +118,11 @@ public class DroneClient extends Thread {
         }
     }
 }
-    
+    // return drone method
     Drone returnDrone(){
         return drone;
     }
-    
+    // Thread to reconnect to server every 10 seconds
     public void run(){
         Socket s = null;
         String hostName = "localhost";
@@ -141,7 +148,7 @@ public class DroneClient extends Thread {
             String data = dataIn.readUTF();
 
             System.out.println("Message Received From Server: "+ data) ;      
-           } catch (UnknownHostException e){
+            } catch (UnknownHostException e){
                System.out.println("Sock:"+e.getMessage()); 
             } catch (EOFException e){
                System.out.println("EOF:"+e.getMessage());
@@ -150,7 +157,6 @@ public class DroneClient extends Thread {
             }
         }
     }
-    
 }
 
     
