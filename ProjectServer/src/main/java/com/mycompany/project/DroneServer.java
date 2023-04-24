@@ -136,10 +136,12 @@ public class DroneServer extends Thread implements ActionListener{
     
     public static void readFile(){
         String binFile = "drone.bin";
+        String csvFile = "fire.bin";
         String line;
         
         try {
             // create input  streams
+            BufferedReader br = new BufferedReader(new FileReader(csvFile));
             FileInputStream fileInput = new FileInputStream(binFile);
             DataInputStream dataOutput = new DataInputStream(fileInput);
 
@@ -154,12 +156,25 @@ public class DroneServer extends Thread implements ActionListener{
                 drones.add(d);
                 
             }
+            // Read data from CSV file and add to arraylist
+            while ((line = br.readLine()) != null) {
+                String[] data = line.split(","); // split CSV data using comma delimiter
 
+                String fireId = data[0];
+                String x = data[1];
+                String y = data[2];
+                String fireLevel = data[3];
+                
+                Fire f = new Fire(fireId,x,y,fireLevel);
+                fires.add(f);
+            }
+            
             // Print the data to the console
             System.out.println(drones);
             
             fileInput.close();
             dataOutput.close();
+            br.close();
 
         } catch (FileNotFoundException e) {
             
