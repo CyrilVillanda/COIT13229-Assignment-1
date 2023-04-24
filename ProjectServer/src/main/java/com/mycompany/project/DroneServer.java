@@ -41,6 +41,8 @@ import javax.swing.JTextField;
 
 public class DroneServer implements ActionListener{
     
+    protected static ArrayList<Drone> drones = new ArrayList<>();
+    
     public static void main (String args[]) {
         
         //JPanel mapPanel = new JPanel();
@@ -123,9 +125,6 @@ public class DroneServer implements ActionListener{
             // create input  streams
             FileInputStream fileInput = new FileInputStream(binFile);
             DataInputStream dataOutput = new DataInputStream(fileInput);
-            
-            // Create an ArrayList to hold the data read from the file
-            ArrayList<Drone> drone = new ArrayList<>();
 
             // Read data from the file and add it to the ArrayList
             while (dataOutput.available() > 0) {
@@ -135,12 +134,12 @@ public class DroneServer implements ActionListener{
                 String y = dataOutput.readUTF();
                 
                 Drone d = new Drone(droneId,droneName,x,y);
-                drone.add(d);
+                drones.add(d);
                 
             }
 
             // Print the data to the console
-            System.out.println(drone);
+            System.out.println(drones);
             
             fileInput.close();
             dataOutput.close();
@@ -153,7 +152,6 @@ public class DroneServer implements ActionListener{
     }
     
     public static void writeFile(){
-        ArrayList<Drone> drones = new ArrayList<>();
 
         try {
             // Create a FileOutputStream for the binary file
@@ -179,9 +177,7 @@ public class DroneServer implements ActionListener{
     }
     
     public void addDrone(String droneId, String droneName){
-        
-        
-        
+        drones.add(new Drone(droneId,droneName,x,y));
     }
 
     @Override
@@ -203,7 +199,6 @@ class DisplayObjectsOnBackground extends JPanel {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        
             
         g.setColor(Color.BLUE);
         g.fillRect(300, 200, 50, 25);
@@ -242,10 +237,10 @@ class Connection extends Thread {
       @Override
      public void run(){
         try { // an echo server
-           String data = in.readUTF();
+            String data = in.readUTF();
            
-          out.writeUTF("Drone Added: "+ data);
-          //System.out.println("Server received:"+data);
+            out.writeUTF("Drone Added: "+ data);
+            //System.out.println("Server received:"+data);
 
         }catch(EOFException e) {
              System.out.println("EOF:"+e.getMessage());
