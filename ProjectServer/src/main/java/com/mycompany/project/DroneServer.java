@@ -51,43 +51,51 @@ public class DroneServer extends Thread implements ActionListener{
     
     public static void main (String args[]) {
         
-        //JPanel mapPanel = new JPanel();
+        // Create map panel components
         mapPanel = new DisplayObjectsOnBackground();
         //mapPanel.setBackground(Color.red); // See panel boundries
         mapPanel.setBounds(200, 50, 500, 500);
         mapPanel.setLayout(null);
         
+        // Create side panel components
         JPanel sidePanel = new JPanel();
         //sidePanel.setBackground(Color.blue); // See panel boundries
         sidePanel.setBounds(0, 50, 200, 500);
         sidePanel.setLayout(null);
         
+        // Create title lable components
         JLabel titleLabel = new JLabel();
         titleLabel.setText("Drone Application");
         titleLabel.setVerticalAlignment(JLabel.TOP);
         titleLabel.setHorizontalAlignment(JLabel.CENTER);
         titleLabel.setBounds(0, 0, 100, 50);
         
+        // Create x button components
         JButton deleteFireButton = new JButton();
         deleteFireButton.setBounds(0, 10, 200, 20);
         deleteFireButton.setText("Delete Fire");
         
+        // Create x button components
         JButton recallDroneButton = new JButton();
         recallDroneButton.setBounds(0, 40, 200, 20);
         recallDroneButton.setText("Recall Drone");
         
+        // Create x button components
         JButton moveDroneButton = new JButton();
         moveDroneButton.setBounds(0, 70, 200, 20);
         moveDroneButton.setText("Move Drone");
         
+        // Create x button components
         JButton exitButton = new JButton();
         exitButton.setBounds(0, 100, 200, 20);
         exitButton.setText("Save & Exit");
         exitButton.addActionListener(e -> writeFile());
         
+        // Create x button components
         JTextField droneDetails = new JTextField();
         droneDetails.setBounds(0, 130, 200, 370);
         
+        // Create JFrame components
         JFrame frame = new JFrame("Drone App");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(null);
@@ -102,27 +110,31 @@ public class DroneServer extends Thread implements ActionListener{
         frame.add(mapPanel);
         frame.setVisible(true);
         
+        // reads the drone binary file and fire CSV file
         readFile();
+        // creates and starts thread
         DroneServer thread = new DroneServer();
         thread.start();
         
-    try{
-      int serverPort=7896; 
-      ServerSocket listenSocket=new ServerSocket(serverPort);
-      while(true) {
-	 Socket clientSocket=listenSocket.accept();
-         
-	 Connection c = new Connection(clientSocket);
-         
-         System.out.printf("\nServer waiting on: %d for client from %d ",
-                 listenSocket.getLocalPort(), clientSocket.getPort() );
+        // Opens server for connections
+        try{
+            int serverPort=7896; 
+            ServerSocket listenSocket=new ServerSocket(serverPort);
+            while(true) {
+                // Accept client socket
+                Socket clientSocket=listenSocket.accept();
+            
+                // Creates connection
+                Connection c = new Connection(clientSocket);
+                System.out.printf("\nServer waiting on: %d for client from %d ",
+                    listenSocket.getLocalPort(), clientSocket.getPort() );
+            }
+        }
+        catch(IOException e){
+            System.out.println("Listen :"+e.getMessage());
         }
     }
-    catch(IOException e){
- 	System.out.println("Listen :"+e.getMessage());
-        }
-    }
-    
+    // Thread to update map panel every 10 sseconds
     public void run(){
         while (true) {
             try {
@@ -134,6 +146,7 @@ public class DroneServer extends Thread implements ActionListener{
         }
     }
     
+    // Read file method
     public static void readFile(){
         String binFile = "drone.bin";
         String csvFile = "fire.bin";
@@ -210,23 +223,26 @@ public class DroneServer extends Thread implements ActionListener{
             fileOutput.close();
             dataOutput.close();
             
+            // Exits the application 
             System.exit(0);
+            
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
     
+    // Add drone method
     public void addDrone(Drone drone){
         drones.add(drone);
     }
 
     @Override
     public void actionPerformed(ActionEvent arg0) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
     }
 }
 
-
+// Class for map panel components
 class DisplayObjectsOnBackground extends JPanel {
     
     public DisplayObjectsOnBackground() {
@@ -236,11 +252,12 @@ class DisplayObjectsOnBackground extends JPanel {
         setBounds(200, 50, 500, 500);
     }
     
+    // Graphics for GUI components
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-            
         
+        // Adds drones to coordinate Map from arraylist
         for (Drone d : DroneServer.drones) {
 
             int x = (parseInt(d.getX()));
@@ -253,6 +270,7 @@ class DisplayObjectsOnBackground extends JPanel {
             g.drawString(d.getDroneName(), x + 5, y + 10);
         }
         
+        // Adds fire to coordinate Map from arraylist
         for (Fire f : DroneServer.fires) {
 
             int x = (parseInt(f.getX()));
@@ -267,61 +285,64 @@ class DisplayObjectsOnBackground extends JPanel {
     }
 }
 
-
+// Connection Thread
 class Connection extends Thread {
-      DataInputStream in;
-      DataOutputStream out;
-      ObjectInputStream objectIn;
-      
-      Socket clientSocket;
-      public Connection (Socket aClientSocket) {
+    DataInputStream in;
+    DataOutputStream out;
+    ObjectInputStream objectIn;
+    
+    Socket clientSocket;
+    
+    // Connection method
+    public Connection (Socket aClientSocket) {
         try {
-          clientSocket = aClientSocket;
-          in=new DataInputStream( 
+            clientSocket = aClientSocket;
+            in=new DataInputStream(
                     clientSocket.getInputStream());
-          out=new DataOutputStream(
+            out=new DataOutputStream(
                     clientSocket.getOutputStream());
-          objectIn = new ObjectInputStream(
-                  clientSocket.getInputStream());
-          this.start();
+            objectIn = new ObjectInputStream(
+                    clientSocket.getInputStream());
+            this.start();
         } catch(IOException e){
-           System.out.println("Connection:" +e.getMessage());
-          }
-      }
-      @Override
-     public void run(){
+            System.out.println("Connection:" +e.getMessage());
+        }
+    }
+    @Override
+    public void run(){
         try { // an echo server
- 
+            // Checks for duplicate drone id
             Drone tempD = (Drone)objectIn.readObject();
             
-           boolean newDrone = true;
-
-        for (Drone d : DroneServer.drones) {
-            if (d.getDroneId().equals(tempD.getDroneId())) {
+            boolean newDrone = true;
+            
+            for (Drone d : DroneServer.drones) {
+                
+                if (d.getDroneId().equals(tempD.getDroneId())) {
                 
                 d.setDroneName(tempD.getDroneName());
                 d.setX(tempD.getX());            
                 d.setY(tempD.getY());
                 
                 newDrone = false;
-            }        
-        }
-
-        if (newDrone) {
+                }
+            }
+            // new drone is added to arraylist
+            if (newDrone) {
             DroneServer.drones.add(tempD);
-        }
+            }
+            // output if drone succsessfully added
             out.writeUTF("Drone Added Successfully");
-            
-
+        
         }catch(EOFException e) {
-             System.out.println("EOF:"+e.getMessage());
+            System.out.println("EOF:"+e.getMessage());
+        }catch(IOException e){
+            System.out.println("IO:"+e.getMessage());
+        }catch (ClassNotFoundException ex) {
+            Logger.getLogger(Connection.class.getName()).log(Level.SEVERE, null, ex);
         }
-        catch(IOException e){
-           System.out.println("IO:"+e.getMessage());
-        } catch (ClassNotFoundException ex) {
-              Logger.getLogger(Connection.class.getName()).log(Level.SEVERE, null, ex);
-          }
-	 
+	
+        // closes socket after successful connection
 	finally {
 	   try {clientSocket.close();
            }

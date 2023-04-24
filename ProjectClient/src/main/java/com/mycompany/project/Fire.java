@@ -10,21 +10,27 @@ package com.mycompany.project;
  * @author cjvil
  */
 public class Fire {
+    
+    // initialise variables
     String fireId;
     String x;
     String y;
     String fireLevel;
-
+    
+    // default constructor
     public Fire() {
+        
     }
-
+    
+    // parameterised constructor
     public Fire(String fireId, String x, String y, String fireLevel) {
         this.fireId = fireId;
         this.x = x;
         this.y = y;
         this.fireLevel = fireLevel;
     }
-
+    
+    // getters and setters
     public String getFireId() {
         return fireId;
     }
@@ -56,7 +62,8 @@ public class Fire {
     public void setFireLevel(String fireLevel) {
         this.fireLevel = fireLevel;
     }
-
+    
+    // toString
     @Override
     public String toString() {
         return "Fire{" + "fireId=" + fireId + ", x=" + x + ", y=" + y + ", fireLevel=" + fireLevel + '}';
