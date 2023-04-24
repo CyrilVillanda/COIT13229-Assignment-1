@@ -93,8 +93,8 @@ public class DroneServer implements ActionListener{
         frame.add(mapPanel);
         frame.setVisible(true);
         
-        writeFile();
         readFile();
+        writeFile();
         
     try{
       int serverPort=7896; 
@@ -154,7 +154,7 @@ public class DroneServer implements ActionListener{
     
     public static void writeFile(){
         ArrayList<Drone> drones = new ArrayList<>();
-        
+
         try {
             // Create a FileOutputStream for the binary file
             FileOutputStream fileOutput = new FileOutputStream("drone.bin");
@@ -176,7 +176,6 @@ public class DroneServer implements ActionListener{
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
     }
     
     public void addDrone(String droneId, String droneName){
