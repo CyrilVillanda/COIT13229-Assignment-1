@@ -192,8 +192,6 @@ public class DroneServer extends Thread implements ActionListener{
                 dataOutput.writeUTF(drone.getY());
             }
             
-            
-
             // Close the output streams
             fileOutput.close();
             dataOutput.close();
