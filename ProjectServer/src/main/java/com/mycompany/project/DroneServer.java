@@ -131,6 +131,37 @@ class ReadFile extends Thread{
     }
 }
 
+class DisplayObjectsOnBackground extends JPanel {
+    
+    public DisplayObjectsOnBackground() {
+
+        setBackground(Color.WHITE);
+        setLayout(null);
+        setBounds(200, 50, 500, 500);
+    }
+    
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        
+            
+        g.setColor(Color.BLUE);
+        g.fillRect(300, 200, 50, 25);
+        g.setColor(Color.WHITE);
+        g.setFont(new Font("Arial", Font.PLAIN, 10));
+        g.drawString("Drone 1", 0, 0);
+        
+        
+        g.setColor(Color.RED);
+        g.fillOval(350, 300, 50, 50);
+        g.setColor(Color.WHITE);
+        g.setFont(new Font("Arial", Font.PLAIN, 20));
+        g.drawString("Fire", 355, 330);        
+
+       
+    }
+}
+
 class Connection extends Thread {
       DataInputStream in;
       DataOutputStream out;
