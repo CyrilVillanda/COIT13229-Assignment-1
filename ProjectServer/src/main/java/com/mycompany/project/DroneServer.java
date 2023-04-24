@@ -24,9 +24,12 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -152,7 +155,7 @@ public class DroneServer implements ActionListener{
     }
     
     public static void writeFile(){
-
+        
         try {
             // Create a FileOutputStream for the binary file
             FileOutputStream fileOutput = new FileOutputStream("drone.bin");
@@ -176,8 +179,8 @@ public class DroneServer implements ActionListener{
         }
     }
     
-    public void addDrone(String droneId, String droneName){
-        drones.add(new Drone(droneId,droneName,x,y));
+    public void addDrone(Drone drone){
+        drones.add(drone);
     }
 
     @Override
@@ -221,6 +224,8 @@ class DisplayObjectsOnBackground extends JPanel {
 class Connection extends Thread {
       DataInputStream in;
       DataOutputStream out;
+      ObjectInputStream objectIn;
+      
       Socket clientSocket;
       public Connection (Socket aClientSocket) {
         try {
@@ -229,6 +234,8 @@ class Connection extends Thread {
                     clientSocket.getInputStream());
           out=new DataOutputStream(
                     clientSocket.getOutputStream());
+          objectIn = new ObjectInputStream(
+                  clientSocket.getInputStream());
           this.start();
         } catch(IOException e){
            System.out.println("Connection:" +e.getMessage());
@@ -238,16 +245,35 @@ class Connection extends Thread {
      public void run(){
         try { // an echo server
             String data = in.readUTF();
-           
-            out.writeUTF("Drone Added: "+ data);
-            //System.out.println("Server received:"+data);
+            
+            Drone tempD = (Drone)objectIn.readObject();
+            
+           boolean newDrone = true;
+
+        for (Drone d : DroneServer.drones) {
+            if (d.getDroneId().equals(tempD.getDroneId())) {
+                
+                d.setDroneName(tempD.getDroneName());
+                d.setX(tempD.getX());            
+                d.setY(tempD.getY());
+                
+                newDrone = false;
+            }        
+        }
+
+        if (!newDrone) {
+            DroneServer.drones.add(tempD);
+        }
+            out.writeUTF("Drone Added Successfully");
 
         }catch(EOFException e) {
              System.out.println("EOF:"+e.getMessage());
         }
         catch(IOException e){
            System.out.println("IO:"+e.getMessage());
-        }
+        } catch (ClassNotFoundException ex) {
+              Logger.getLogger(Connection.class.getName()).log(Level.SEVERE, null, ex);
+          }
 	 
 	finally {
 	   try {clientSocket.close();
