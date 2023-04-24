@@ -12,22 +12,27 @@ import java.io.Serializable;
  * @author cjvil
  */
 public class Drone implements Serializable{
+    
+    // initialise variables
     String droneId;
     String droneName;
     String x;
     String y;
     
+    // default constructor
     public Drone(){
         
     }
-
+    
+    // parameterised constructor
     public Drone(String droneId, String droneName, String x, String y) {
         this.droneId = droneId;
         this.droneName = droneName;
         this.x = x;
         this.y = y;
     }
-
+    
+    // getters and setters
     public String getDroneId() {
         return droneId;
     }
@@ -59,7 +64,8 @@ public class Drone implements Serializable{
     public void setY(String y) {
         this.y = y;
     }
-
+    
+    // toString
     @Override
     public String toString() {
         return "Drone: " + " droneId = " + droneId + ", droneName = " + droneName + ", x = " + x + ", y = " + y + "\n";
