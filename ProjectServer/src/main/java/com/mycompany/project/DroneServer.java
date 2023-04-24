@@ -80,6 +80,7 @@ public class DroneServer implements ActionListener{
         JButton exitButton = new JButton();
         exitButton.setBounds(0, 100, 200, 20);
         exitButton.setText("Save & Exit");
+        exitButton.addActionListener(e -> writeFile());
         
         JTextField droneDetails = new JTextField();
         droneDetails.setBounds(0, 130, 200, 370);
@@ -99,7 +100,6 @@ public class DroneServer implements ActionListener{
         frame.setVisible(true);
         
         readFile();
-        writeFile();
         
     try{
       int serverPort=7896; 
@@ -174,6 +174,8 @@ public class DroneServer implements ActionListener{
             // Close the output streams
             fileOutput.close();
             dataOutput.close();
+            
+            System.exit(0);
         } catch (IOException e) {
             e.printStackTrace();
         }

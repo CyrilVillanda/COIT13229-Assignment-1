@@ -5,11 +5,13 @@
  */
 package com.mycompany.project;
 
+import java.io.Serializable;
+
 /**
  *
  * @author cjvil
  */
-public class Drone {
+public class Drone implements Serializable{
     String droneId;
     String droneName;
     String x;

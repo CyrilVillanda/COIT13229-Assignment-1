@@ -37,11 +37,11 @@ public class DroneClient {
 	DataOutputStream dataOut =new DataOutputStream(s.getOutputStream());
         ObjectOutputStream objectOut = new ObjectOutputStream(dataOut);
         
-        System.out.print("Enter Drone id: ");
-        droneId = input.next();
+        System.out.println("Enter Drone id: ");
+        droneId = input.nextLine();
         
-        System.out.print("Enter Name id: ");
-        droneName = input.next();
+        System.out.println("Enter Name id: ");
+        droneName = input.nextLine();
         
         Drone drone = new Drone(droneId, droneName, x, y);
        
