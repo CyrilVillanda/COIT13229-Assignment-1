@@ -10,27 +10,35 @@ package com.mycompany.project;
  * @author cjvil
  */
 public class Drone {
+    String droneId;
     String droneName;
     String x;
     String y;
-    String droneId;
     
     public Drone(){
         
     }
 
-    public Drone(String droneName, String x, String y, String droneId) {
+    public Drone(String droneId, String droneName, String x, String y) {
+        this.droneId = droneId;
         this.droneName = droneName;
         this.x = x;
         this.y = y;
+    }
+
+    public String getDroneId() {
+        return droneId;
+    }
+
+    public void setDroneId(String droneId) {
         this.droneId = droneId;
     }
 
-    public String getdroneName() {
+    public String getDroneName() {
         return droneName;
     }
 
-    public void setFireId(String fireId) {
+    public void setDroneName(String droneName) {
         this.droneName = droneName;
     }
 
@@ -50,16 +58,10 @@ public class Drone {
         this.y = y;
     }
 
-    public String getDroneId() {
-        return droneId;
-    }
-
-    public void setDroneId(String droneId) {
-        this.droneId = droneId;
-    }
-
     @Override
     public String toString() {
-        return "Drone" + "droneName = " + droneName + ", x = " + x + ", y = " + y + ", droneId = " + droneId;
+        return "Drone: " + " droneId = " + droneId + ", droneName = " + droneName + ", x = " + x + ", y = " + y + "\n";
     }
+
+    
 }

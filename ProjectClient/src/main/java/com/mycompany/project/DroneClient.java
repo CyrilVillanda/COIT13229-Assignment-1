@@ -42,7 +42,7 @@ public class DroneClient {
         String drone = droneId +","+ droneName +","+ x +","+ y;
        
 	out.writeUTF(drone);
-        String data = in.readUTF();	      
+        String data = in.readUTF();
 	System.out.println("Message Received From Server: "+ data) ;      
        } catch (UnknownHostException e){
 	   System.out.println("Sock:"+e.getMessage()); 
@@ -54,3 +54,5 @@ public class DroneClient {
 	
     }
 }
+
+    

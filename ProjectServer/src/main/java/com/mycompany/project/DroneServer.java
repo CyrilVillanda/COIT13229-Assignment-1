@@ -20,6 +20,7 @@ import java.io.DataOutputStream;
 import java.io.EOFException;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -92,7 +93,8 @@ public class DroneServer implements ActionListener{
         frame.add(mapPanel);
         frame.setVisible(true);
         
-        //readFile();
+        writeFile();
+        readFile();
         
     try{
       int serverPort=7896; 
@@ -148,6 +150,33 @@ public class DroneServer implements ActionListener{
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    
+    public static void writeFile(){
+        ArrayList<Drone> drones = new ArrayList<>();
+        
+        try {
+            // Create a FileOutputStream for the binary file
+            FileOutputStream fileOutput = new FileOutputStream("drone.bin");
+
+            // Create a DataOutputStream to write data to the output stream
+            DataOutputStream dataOutput = new DataOutputStream(fileOutput);
+
+            // Write each Person object to the file
+            for (Drone drone : drones) {
+                dataOutput.writeUTF(drone.getDroneId());
+                dataOutput.writeUTF(drone.getDroneName());
+                dataOutput.writeUTF(drone.getX());
+                dataOutput.writeUTF(drone.getY());
+            }
+
+            // Close the output streams
+            fileOutput.close();
+            dataOutput.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
     }
     
     public void addDrone(String droneId, String droneName){
