@@ -56,6 +56,9 @@ public class DroneServer {
         exitButton.setBounds(0, 100, 200, 20);
         exitButton.setText("Save & Exit");
 
+        JTextField droneDetails = new JTextField();
+        droneDetails.setBounds(0, 130, 200, 370)
+
         JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(null);
