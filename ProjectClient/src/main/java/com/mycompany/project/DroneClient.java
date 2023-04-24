@@ -37,7 +37,7 @@ public class DroneClient {
         System.out.print("Enter Name id: ");
         droneName = input.next();
         
-       String drone = droneId +","+ droneName;
+        String drone = droneId +","+ droneName;
        
 	out.writeUTF(drone);
         String data = in.readUTF();	      
