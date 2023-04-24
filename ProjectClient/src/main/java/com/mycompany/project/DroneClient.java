@@ -19,7 +19,7 @@ import java.util.Scanner;
  *
  * @author cjvil
  */
-public class DroneClient {
+public class DroneClient extends Thread {
     public static void main (String args[]) {
     ArrayList<Drone> drones = new ArrayList<>();
     Scanner input = new Scanner(System.in);
@@ -48,6 +48,7 @@ public class DroneClient {
 	objectOut.writeObject(drone);
         
         String data = dataIn.readUTF();
+        
 	System.out.println("Message Received From Server: "+ data) ;      
        } catch (UnknownHostException e){
 	   System.out.println("Sock:"+e.getMessage()); 
@@ -56,7 +57,18 @@ public class DroneClient {
     	} catch (IOException e){
 	   System.out.println("IO:"+e.getMessage());
         }
+    
+    DroneClient thread = new DroneClient();
+    thread.start();
 	
+    while(true){
+        
+    }
+    
+    }
+    
+    public void run(){
+        
     }
     
 }

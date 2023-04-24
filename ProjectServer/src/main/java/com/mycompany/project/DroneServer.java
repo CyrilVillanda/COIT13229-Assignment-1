@@ -43,9 +43,10 @@ import javax.swing.JTextField;
  */
 
 
-public class DroneServer implements ActionListener{
+public class DroneServer extends Thread implements ActionListener{
     
     protected static ArrayList<Drone> drones = new ArrayList<>();
+    protected static ArrayList<Fire> fires = new ArrayList<>();
     public static DisplayObjectsOnBackground mapPanel;
     
     public static void main (String args[]) {
@@ -90,7 +91,7 @@ public class DroneServer implements ActionListener{
         JFrame frame = new JFrame("Drone App");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(null);
-        frame.setSize(700,600);
+        frame.setSize(750,600);
         frame.add(titleLabel);
         sidePanel.add(deleteFireButton);
         sidePanel.add(recallDroneButton);
@@ -102,6 +103,8 @@ public class DroneServer implements ActionListener{
         frame.setVisible(true);
         
         readFile();
+        DroneServer thread = new DroneServer();
+        thread.start();
         
     try{
       int serverPort=7896; 
@@ -118,8 +121,17 @@ public class DroneServer implements ActionListener{
     catch(IOException e){
  	System.out.println("Listen :"+e.getMessage());
         }
-        
-        
+    }
+    
+    public void run(){
+        while (true) {
+            try {
+                mapPanel.repaint();
+                Thread.sleep(10000);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(DroneServer.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
     
     public static void readFile(){
@@ -172,6 +184,15 @@ public class DroneServer implements ActionListener{
                 dataOutput.writeUTF(drone.getX());
                 dataOutput.writeUTF(drone.getY());
             }
+            
+            for (Drone drone : drones) {
+                dataOutput.writeUTF(drone.getDroneId());
+                dataOutput.writeUTF(drone.getDroneName());
+                dataOutput.writeUTF(drone.getX());
+                dataOutput.writeUTF(drone.getY());
+            }
+            
+            
 
             // Close the output streams
             fileOutput.close();
@@ -220,12 +241,20 @@ class DisplayObjectsOnBackground extends JPanel {
             g.drawString(d.getDroneName(), x + 5, y + 10);
         }
         
+        for (Fire f : DroneServer.fires) {
+
+            int x = (parseInt(f.getX()));
+            int y = (parseInt(f.getY()) - 500) * -1;
+
+            g.setColor(Color.RED);
+            g.fillOval(x, y, 50, 50);
+            g.setColor(Color.WHITE);
+            g.setFont(new Font("Arial", Font.PLAIN, 20));
+            g.drawString(f.getFireId(), x + 5, y + 10);  
+        }
         
-        g.setColor(Color.RED);
-        g.fillOval(350, 300, 50, 50);
-        g.setColor(Color.WHITE);
-        g.setFont(new Font("Arial", Font.PLAIN, 20));
-        g.drawString("Fire", 355, 330);        
+        
+              
         
        
     }
@@ -271,11 +300,11 @@ class Connection extends Thread {
             }        
         }
 
-        if (!newDrone) {
+        if (newDrone) {
             DroneServer.drones.add(tempD);
         }
             out.writeUTF("Drone Added Successfully");
-            DroneServer.mapPanel.repaint();
+            
 
         }catch(EOFException e) {
              System.out.println("EOF:"+e.getMessage());
