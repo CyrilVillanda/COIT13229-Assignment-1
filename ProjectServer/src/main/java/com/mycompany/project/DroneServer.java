@@ -69,6 +69,7 @@ public class DroneServer {
         sidePanel.add(deleteFireButton);
         sidePanel.add(recallDroneButton);
         sidePanel.add(moveDroneButton);
+        sidePanel.add(droneDetails);
         sidePanel.add(exitButton);
         frame.setVisible(true);
 
