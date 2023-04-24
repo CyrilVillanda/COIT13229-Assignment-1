@@ -26,38 +26,41 @@ public class DroneServer {
     
     public static void main (String args[]) {
 
-        JPanel mapPanel = new JPanel();
-        mapPanel.setBackground(Color.red);
+        //JPanel mapPanel = new JPanel();
+        DisplayObjectsOnBackground mapPanel = new DisplayObjectsOnBackground();
+        //mapPanel.setBackground(Color.red); // See panel boundries
         mapPanel.setBounds(200, 50, 500, 500);
-
+        mapPanel.setLayout(null);
+        
         JPanel sidePanel = new JPanel();
-        sidePanel.setBackground(Color.blue);
+        //sidePanel.setBackground(Color.blue); // See panel boundries
         sidePanel.setBounds(0, 50, 200, 500);
-
+        sidePanel.setLayout(null);
+        
         JLabel titleLabel = new JLabel();
         titleLabel.setText("Drone Application");
         titleLabel.setVerticalAlignment(JLabel.TOP);
         titleLabel.setHorizontalAlignment(JLabel.CENTER);
         titleLabel.setBounds(0, 0, 100, 50);
-
+        
         JButton deleteFireButton = new JButton();
-        deleteFireButton.setBounds(50, 10, 100, 20);
+        deleteFireButton.setBounds(0, 10, 200, 20);
         deleteFireButton.setText("Delete Fire");
-
+        
         JButton recallDroneButton = new JButton();
         recallDroneButton.setBounds(0, 40, 200, 20);
         recallDroneButton.setText("Recall Drone");
-
+        
         JButton moveDroneButton = new JButton();
         moveDroneButton.setBounds(0, 70, 200, 20);
         moveDroneButton.setText("Move Drone");
-
+        
         JButton exitButton = new JButton();
         exitButton.setBounds(0, 100, 200, 20);
         exitButton.setText("Save & Exit");
-
+        
         JTextField droneDetails = new JTextField();
-        droneDetails.setBounds(0, 130, 200, 370)
+        droneDetails.setBounds(0, 130, 200, 370);
 
         JFrame frame = new JFrame("Drone App");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
